@@ -88,7 +88,7 @@ $("vitrine").innerHTML = Object.entries(CATS).map(([k, c]) =>
   PRODUTOS.filter(p => p.cat === k).map(p =>
     `<article class="card">${art("", c.arte, p.foto, p.nome)}<span class="tag">Sob encomenda</span><h3>${p.nome}</h3><p>${p.desc}</p>` +
     `<div class="row"><b>${R(p.preco)}</b><div class="qty"><button data-id="${p.id}" data-d="-1" aria-label="Diminuir">−</button><span id="q-${p.id}">0</span><button data-id="${p.id}" data-d="1" aria-label="Aumentar">+</button></div></div></article>`
-  ).  ).join("") + `</div><button class="arr r" data-dir="1" data-t="t-${k}" aria-label="Próximo">›</button></div>${cardapio(k)}</section>`).join("");
+   ).join("") + `</div><button class="arr r" data-dir="1" data-t="t-${k}" aria-label="Próximo">›</button></div>${cardapio(k)}</section>`).join("");
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-dir]");
   if (a) { const t = $(a.dataset.t); return t.scrollBy({ left: a.dataset.dir * t.clientWidth * .8, behavior: "smooth" }); }
