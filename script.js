@@ -39,6 +39,41 @@ const REVISTA = [
 ];
 
 // ===== CÓDIGO DA PÁGINA =====
+// ===== CARDÁPIOS (aparecem abaixo de cada carrossel; a chave é a mesma de CATS) =====
+const MENUS = {
+  bolo: {
+    titulo: "Ver sabores e valores dos bolos",
+    grupos: [
+      { t: "Massas", p: "Manteigada: R$ 105,00 o kg", s: ["Massa manteigada", "Massa de chocolate (+ R$ 8,00 por kg)"] },
+      { t: "Recheios clássicos", s: ["Doce de leite", "Ninho", "Chocolate", "Beijinho", "Amendoim"] },
+      { t: "Recheios especiais", p: "+ R$ 12,00 por kg", s: ["Ninho com Nutella", "Ameixa", "Ferrero Rocher", "Cupuaçu", "Ninho de morango"] }
+    ],
+    notas: [
+      "O valor do topo varia de acordo com o modelo. Massa de chocolate tem adicional de R$ 8,00.",
+      "Informe a massa e o recheio nas observações do pedido."
+    ]
+  },
+  festa: {
+    titulo: "Ver sabores e valores dos brigadeiros",
+    grupos: [
+      { t: "Gourmet", s: ["Ninho com Nutella", "Ferrero Rocher", "Amendoim", "Prestígio", "Chocolate com Nutella"] },
+      { t: "Tradicionais", s: ["Chocolate", "Ninho", "Doce de leite", "Beijinho", "Casadinhos"] },
+      { t: "Personalizados", s: ["Chocolate", "Ninho"], o: "Apenas com cores metalizadas." }
+    ],
+    notas: [
+      "Valores conforme a quantidade da encomenda, consulte pelo WhatsApp.",
+      "Informe o sabor nas observações do pedido."
+    ]
+  }
+};
+
+const cardapio = k => {
+  const m = MENUS[k];
+  if (!m) return "";
+  return `<details class="menu"><summary>${m.titulo}</summary><div class="mg">` +
+    m.grupos.map(g => `<div class="mb"><h4>${g.t}</h4>${g.p ? `<b>${g.p}</b>` : ""}<ul>${g.s.map(s => `<li>${s}</li>`).join("")}</ul>${g.o ? `<small>${g.o}</small>` : ""}</div>`).join("") +
+    `</div>` + m.notas.map(n => `<p class="note">${n}</p>`).join("") + `</details>`;
+};
 const $ = id => document.getElementById(id);
 const R = v => "R$ " + v.toFixed(2).replace(".", ",");
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
