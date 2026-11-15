@@ -82,3 +82,15 @@ footer .big{display:inline-block;width:auto;padding:12px 28px}
 .bnav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:14px}
 .bnav button{width:40px;height:40px;border-radius:50%;border:1px solid var(--pink);background:var(--card);color:var(--pink);font-size:1.4rem;cursor:pointer}
 @media(max-width:640px){.book{grid-template-columns:1fr}.book::after{display:none}.pg:nth-child(2){display:none}}
+.menu{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:4px 16px}
+.menu summary{cursor:pointer;font-weight:700;color:var(--pink);padding:12px 0;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.menu summary::-webkit-details-marker{display:none}
+.menu summary::after{content:"+";font-size:1.4rem}
+.menu[open] summary::after{content:"−"}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;padding-bottom:6px}
+.mb{background:var(--soft);border-radius:14px;padding:12px}
+.mb h4{margin:0 0 2px;font-size:1rem}
+.mb b{color:var(--pink)}
+.mb ul{margin:6px 0 0;padding-left:18px}
+.mb small{color:var(--mut)}
+.menu .note{margin:8px 0}
