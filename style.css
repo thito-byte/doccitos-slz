@@ -94,3 +94,7 @@ footer .big{display:inline-block;width:auto;padding:12px 28px}
 .mb ul{margin:6px 0 0;padding-left:18px}
 .mb small{color:var(--mut)}
 .menu .note{margin:8px 0}
+
+/* bolo: um único cartão, centralizado e sem setas */
+#t-bolo{justify-content:center}
+[data-t="t-bolo"]{display:none}
