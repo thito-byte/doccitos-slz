@@ -43,7 +43,7 @@ const MENUS = {
   bolo: {
     titulo: "Ver sabores e valores dos bolos",
     grupos: [
-      { t: "Massas", p: "", s: ["Massa manteigada", "Massa de chocolate (+ R$ 8,00 por kg)"] },
+      { t: "Massas", s: ["Massa manteigada", "Massa de chocolate (+ R$ 8,00 por kg)"] },
       { t: "Recheios clássicos", s: ["Doce de leite", "Ninho", "Chocolate", "Beijinho", "Amendoim"] },
       { t: "Recheios especiais", p: "+ R$ 12,00 por kg", s: ["Ninho com Nutella", "Ameixa", "Ferrero Rocher", "Cupuaçu", "Ninho de morango"] }
     ],
