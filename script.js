@@ -1,7 +1,7 @@
 // ===== CONFIGURAÇÕES (troque aqui) =====
 const CFG = {
-  whatsapp: "5598991231854",            // EXEMPLO: troque pelo número real (55 + DDD + número)
-  pix: "Tr306565@gmail.com",            // EXEMPLO: troque pela sua chave Pix
+  whatsapp: "5598985239493",            // EXEMPLO: troque pelo número real (55 + DDD + número)
+  pix: "5598985239493",            // EXEMPLO: troque pela sua chave Pix
   instagram: "https://www.instagram.com/doccitos_slz",
   dias: [2, 3, 4, 5, 6],                // dias de atendimento: 0=domingo ... 6=sábado
   abre: 16, fecha: 18,
@@ -11,19 +11,19 @@ const CFG = {
 
 // ===== SEÇÕES DO CARROSSEL (todas sob encomenda, 50% de sinal) =====
 const CATS = {
-  bolo:  { titulo: "Bolos de aniversário", sub: "Deslize para o lado e escolha o seu", arte: "cake" },
-  festa: { titulo: "Doces para festa", sub: "Deslize para o lado e escolha o seu", arte: "cup" }
+  bolo:  { titulo: "Bolos de Aniversário", sub: "Deslize para o lado e escolha o seu", arte: "cake" },
+  festa: { titulo: "Doces para Festa", sub: "Deslize para o lado e escolha o seu", arte: "cup" }
 };
 
 // ===== PRODUTOS (exemplos: troque nome, descrição e preço) =====
 // foto: caminho da imagem, ex.: "imagem/bolo-p.png". Vazio "" = desenho genérico.
 const PRODUTOS = [
-  { id: "b1", cat: "bolo",  nome: "Bolo de aniversário p", desc: "Serve cerca de 10 fatias.", preco: 90, foto: "imagems/bolo m-img.png" },
-  { id: "b2", cat: "bolo",  nome: "Bolo de aniversário m", desc: "Serve cerca de 20 fatias.", preco: 150, foto: "imagems/bolo p-img.png" }, 
+  { id: "b1", cat: "bolo",  nome: "Bolo de Aniversário P", desc: "Serve cerca de 10 fatias.", preco: 90, foto: "imagems/bolo m-img.png" },
+  { id: "b2", cat: "bolo",  nome: "Bolo de Aniversário M", desc: "Serve cerca de 20 fatias.", preco: 150, foto: "imagems/bolo p-img.png" }, 
 
-  { id: "f1", cat: "festa", nome: "Kit 25 docinhos", desc: "Brigadeiros e beijinhos variados.", preco: 85, foto: "imagems/kit 25-img.png" },
-  { id: "f2", cat: "festa", nome: "kit 50 docinhos", desc: "50 docinhos para a festa.", preco: 100, foto: "imagems/kit 50-img.png" },
-  { id: "f3", cat: "festa", nome: "Cento de brigadeiros", desc: "100 brigadeiros no sabor que quiser.", preco: 180, foto: "imagems/cento brigadeiro-img.png" }
+  { id: "f1", cat: "festa", nome: "Brigadeiros Gourmet", desc: ".", preco: 130, foto: "imagems/kit 25-img.png" },
+  { id: "f2", cat: "festa", nome: "Brigadeiros Tradicionais", desc: ".", preco: 120, foto: "imagems/kit 50-img.png" },
+  { id: "f3", cat: "festa", nome: "Brigadeiros Personalizados", desc: ".", preco: 140, foto: "imagems/cento brigadeiro-img.png" }
 ];
 
 // ===== REVISTA: bolos que já fizemos (t = título, d = descrição, foto = imagem, h = tom do desenho genérico) =====
