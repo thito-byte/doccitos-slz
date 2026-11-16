@@ -18,8 +18,7 @@ const CATS = {
 // ===== PRODUTOS (exemplos: troque nome, descrição e preço) =====
 // foto: caminho da imagem, ex.: "imagem/bolo-p.png". Vazio "" = desenho genérico.
 const PRODUTOS = [
-  { id: "b1", cat: "bolo",  nome: "Bolo de Aniversário P", desc: "Serve cerca de 10 fatias.", preco: 90, foto: "imagems/bolo m-img.png" },
-  { id: "b2", cat: "bolo",  nome: "Bolo de Aniversário M", desc: "Serve cerca de 20 fatias.", preco: 150, foto: "imagems/bolo p-img.png" }, 
+  { id: "b1", cat: "bolo",  nome: "Bolo por kg", desc: "Massa manteigada. A partir de 1 kg, de meio em meio quilo. Informe o recheio nas observações do pedido.", preco: 105, foto: "imagems/bolo m-img.png", un: "kg", min: 1, passo: 0.5 },
 
   { id: "f1", cat: "festa", nome: "Brigadeiros Gourmet", desc: ".", preco: 130, foto: "imagems/kit 25-img.png" },
   { id: "f2", cat: "festa", nome: "Brigadeiros Tradicionais", desc: ".", preco: 120, foto: "imagems/kit 50-img.png" },
@@ -76,6 +75,8 @@ const cardapio = k => {
 };
 const $ = id => document.getElementById(id);
 const R = v => "R$ " + v.toFixed(2).replace(".", ",");
+const Q = (v, p) => String(v).replace(".", ",") + (p.un ? " " + p.un : "");
+const fq = (p, q) => p.un ? Q(q, p) + " – " + p.nome : q + "x " + p.nome;
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const art = (svgStyle, arte, foto, nome) => `<div class="art"><svg viewBox="0 0 40 40" style="${svgStyle}"><use href="#${arte}"/></svg>` + (foto ? `<img src="${foto}" alt="${nome}" onerror="this.remove()">` : "") + `</div>`;
 const cart = {};
@@ -87,7 +88,7 @@ $("vitrine").innerHTML = Object.entries(CATS).map(([k, c]) =>
   `<section class="cat"><h2>${c.titulo}</h2><p class="sub">${c.sub}</p><div class="car"><button class="arr l" data-dir="-1" data-t="t-${k}" aria-label="Anterior">‹</button><div class="track" id="t-${k}">` +
   PRODUTOS.filter(p => p.cat === k).map(p =>
     `<article class="card">${art("", c.arte, p.foto, p.nome)}<span class="tag">Sob encomenda</span><h3>${p.nome}</h3><p>${p.desc}</p>` +
-    `<div class="row"><b>${R(p.preco)}</b><div class="qty"><button data-id="${p.id}" data-d="-1" aria-label="Diminuir">−</button><span id="q-${p.id}">0</span><button data-id="${p.id}" data-d="1" aria-label="Aumentar">+</button></div></div></article>`
+    `<div class="row"><b>${R(p.preco)}${p.un ? " /" + p.un : ""}</b><div class="qty"><button data-id="${p.id}" data-d="-1" aria-label="Diminuir">−</button><span id="q-${p.id}">0</span><button data-id="${p.id}" data-d="1" aria-label="Aumentar">+</button></div></div></article>`
    ).join("") + `</div><button class="arr r" data-dir="1" data-t="t-${k}" aria-label="Próximo">›</button></div>${cardapio(k)}</section>`).join("");
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-dir]");
@@ -95,8 +96,10 @@ document.addEventListener("click", e => {
   const b = e.target.closest("[data-id]");
   if (!b) return;
   const id = b.dataset.id;
-  cart[id] = Math.max(0, (cart[id] || 0) + Number(b.dataset.d));
-  if (!cart[id]) delete cart[id];
+   const p = PRODUTOS.find(x => x.id === id), st = p.passo || 1, mn = p.min || 1, d = Number(b.dataset.d), cur = cart[id] || 0;
+  let nv = d > 0 ? (cur ? cur + st : mn) : cur - st;
+  if (nv < mn) nv = 0;
+  if (nv) cart[id] = nv; else delete cart[id];
   render();
 });
 
@@ -120,7 +123,7 @@ function calc() {
   const lin = [];
   for (const p of PRODUTOS) {
     const q = cart[p.id]; if (!q) continue;
-    total += q * p.preco; n += q;
+    total += q * p.preco; n += p.un ? 1 : q;
     lin.push({ p, q, t: q * p.preco });
   }
   return { n, lin, total, sinal: total * 0.5, resto: total * 0.5 };
@@ -130,7 +133,7 @@ function render() {
   const c = calc();
   PRODUTOS.forEach(p => $("q-" + p.id).textContent = cart[p.id] || 0);
   $("cnt").textContent = c.n;
-  $("itens").innerHTML = c.lin.length ? c.lin.map(l => `<div class="it"><span>${l.q}x ${l.p.nome}</span><b>${R(l.t)}</b></div>`).join("") : '<p class="note">Seu pedido está vazio. Escolha nos carrosséis com os botões + e −.</p>';
+   $("itens").innerHTML = c.lin.length ? c.lin.map(l => `<div class="it"><span>${fq(l.p, l.q)}</span><b>${R(l.t)}</b></div>`).join("") : '<p class="note">Seu pedido está vazio. Escolha nos carrosséis com os botões + e −.</p>';
   $("tot").innerHTML = c.n ? `<div><span>Total</span><span>${R(c.total)}</span></div><div class="g"><span>Sinal de 50% para confirmar</span><span>${R(c.sinal)}</span></div><div><span>Restante, pago na entrega</span><span>${R(c.resto)}</span></div>` : "";
   $("aviso").textContent = c.n ? `Encomendas exigem 50% de sinal. Chave Pix para o sinal: ${CFG.pix}` : "";
 }
@@ -152,11 +155,11 @@ $("fin").onclick = () => {
   $("erro").textContent = "";
   const cod = "DS-" + String(Date.now()).slice(-6);
   const pag = $("pag").value, obs = $("obs").value.trim();
-  const itens = c.lin.map(l => `• ${l.q}x ${l.p.nome} – ${R(l.t)}`).join("\n");
+   const itens = c.lin.map(l => `• ${fq(l.p, l.q)} – ${R(l.t)}`).join("\n");
   const txt = `*Encomenda Doccitos Slz*\nVoucher: ${cod}\n\nCliente: ${nome}\nEndereço: ${end}\nData/horário: ${data}\n\n${itens}\n\nTotal: ${R(c.total)}\nSinal (50%): ${R(c.sinal)}\nPix: ${CFG.pix}\nRestante na entrega: ${R(c.resto)}\nPagamento: ${pag}` + (obs ? `\nObs.: ${obs}` : "") + `\n\n${CFG.mensagem}`;
   wa = `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(txt)}`;
   $("tk").innerHTML = `<h3>Voucher ${cod}</h3><div class="tk"><b>${esc(nome)}</b><br>${esc(end)}<br>Data: ${esc(data)}</div>` +
-    `<div class="tk">${c.lin.map(l => `${l.q}x ${esc(l.p.nome)} – ${R(l.t)}`).join("<br>")}</div>` +
+       `<div class="tk">${c.lin.map(l => `${esc(fq(l.p, l.q))} – ${R(l.t)}`).join("<br>")}</div>` +
     `<div class="tot"><div><span>Total</span><span>${R(c.total)}</span></div><div class="g"><span>Sinal 50%</span><span>${R(c.sinal)}</span></div><div><span>Na entrega</span><span>${R(c.resto)}</span></div><div><span>Pagamento</span><span>${esc(pag)}</span></div></div>` +
     (obs ? `<div class="tk">Obs.: ${esc(obs)}</div>` : "") + `<p class="thx">${CFG.mensagem}</p>` +
     `<a class="big" href="${wa}" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a><button class="big sec" id="fx">Fechar</button>`;
